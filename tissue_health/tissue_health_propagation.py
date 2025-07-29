@@ -5,40 +5,36 @@ Yidan Xue - 2022/02
 
 """
 
-
+from dolfin import *
+import scipy.interpolate
 import argparse
 import time
 import yaml
 import numpy as np
-import nibabel as nib
-from scipy.integrate import odeint
-import sys
 import os
-# import copy
-# from dolfin import *
-# import scipy.interpolate
-# from nibabel.testing import data_path
-# import matplotlib.pyplot as plt
-# import pandas as pd
-# import multiprocessing
+import copy
+from nibabel.testing import data_path
+import nibabel as nib
+import matplotlib.pyplot as plt
+import pandas as pd
+from scipy.integrate import odeint
+import multiprocessing
 
 # added module
 import IO_fcts
-# import finite_element_fcts as fe_mod
+import finite_element_fcts as fe_mod
 
 start0 = time.time()
 
 # %% READ INPUT
-# if rank == 0: 
-print('Step 1: Reading the input')
+if rank == 0: 
+    print('Step 1: Reading the input')
 
 parser = argparse.ArgumentParser(description="infarct computation based on perfusion results")
 parser.add_argument("--config_file", help="path to configuration file",
                     type=str, default='./config_propagation.yaml')
 parser.add_argument("--res_fldr", help="path to results folder (string ended with /)",
                 type=str, default=None)
-parser.add_argument("--res_yaml", help="path to yaml file storing infarct volume",
-                type=str, default='./infarct.yaml')
 config_file = parser.parse_args().config_file
 
 configs = IO_fcts.basic_flow_config_reader_yml(config_file,parser)
@@ -70,8 +66,8 @@ def cell_death(x,t):
 	return dxdt
 
 # %% READ PERFUSION
-# if rank == 0: 
-print('Step 2: Reading perfusion files')
+if rank == 0: 
+    print('Step 2: Reading perfusion files')
 
 # read healthy perfusion image
 img_h = nib.load(healthyfile)
@@ -103,8 +99,8 @@ rel_perf_t = img_t/img_h
 rel_perf_t[np.isnan(rel_perf_t)] = 0
 
 # %% RUN CELL DEATH MODEL
-# if rank == 0:
-print('Step 3: Running the cell death model')
+if rank == 0:
+    print('Step 3: Running the cell death model')
 
 start1 = time.time()
 
@@ -193,28 +189,23 @@ for i in range(nx):
 				infarct[i,j,k] = hs[-1,0]
 				toxin[i,j,k] = hs[-1,1]
 
-# save results
-img = nib.Nifti1Image(infarct, affine_matrix)
-if not os.path.exists(res_fldr):
-    os.makedirs(res_fldr)
-nib.save(img, res_fldr +'infarcted_volume_fraction.nii.gz')
-
 # calculate the core volume
-voxel_volume = affine_matrix[0,0] * affine_matrix[1,1] * affine_matrix[2,2] / 1000 # [ml]
-core = np.sum(infarct>0.8)*voxel_volume
+core = np.sum(infarct>0.8)*pow(affine_matrix[0,0],3)/1000
 
 end1 = time.time()
 
-# save infarct volume to yaml file
-with open(parser.parse_args().res_yaml, 'w') as outfile:
-    yaml.safe_dump(
-        {'core-volume': float(core)},
-        outfile
-    )
+if len(sys.argv) >= 2:
+    # The second argument indicates the path where to write a summary of
+    # outcome parameters too, this now considers only the infarct core volume.
+    with open(sys.argv[2], 'w') as outfile:
+        yaml.safe_dump(
+            {'core-volume': core},
+            outfile
+        )
 
 end0 = time.time()
 
-# if rank == 0:
-print('The core volume is '+str(core)+' mL')
-print('Infarct computation time [s]; \t\t\t', end1 - start1)
-print('Simulation finished - Total execution time [s]; \t\t\t', end0 - start0)
+if rank == 0:
+    print('The core volume is '+str(core)+' mL')
+    print('Infarct computation time [s]; \t\t\t', end1 - start1)
+    print('Simulation finished - Total execution time [s]; \t\t\t', end0 - start0)

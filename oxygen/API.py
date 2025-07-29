@@ -7,10 +7,10 @@ from desist.isct.utilities import read_yaml, write_yaml
 # perfusion_config_file = '/app/perfusion/config_basic_flow_solver.yaml'
 perfusion_dir = 'pf_sim'
 # perfusion_config_name='perfusion_config.yaml'
-perfusion_config_name = 'config_basic_flow_solver.yaml'
+perfusion_config_name = 'config_coupled_flow_solver.yaml'
 OXYGEN_ROOT = "/app/oxygen"
+# OXYGEN_ROOT = "./oxygen"
 oxygen_config_file = OXYGEN_ROOT + '/config_oxygen_solver.yaml'
-
 
 class API(API):
     def event(self):

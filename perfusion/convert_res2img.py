@@ -19,11 +19,11 @@ dolfin.set_log_level(50)
 
 
 # %% READ INPUT
-parser = argparse.ArgumentParser(description="convert finite elements results (*.h5 and *.xdmf) into an image (*.nii.gz)")
+parser = argparse.ArgumentParser(description="perfusion computation based on multi-compartment Darcy flow model")
 parser.add_argument("--config_file", help="path to configuration file",
                     type=str, default='./config_basic_flow_solver.yaml')
 parser.add_argument("--res_fldr", help="path to results folder (string ended with /)",
-                    type=str, default=None)
+                    type=str, default='../VP_results/p0000/perfusion_healthy/')
 parser.add_argument("--variable", help="e.g. press1, vel1, perfusion, K1, etc.",
                     type=str, default='perfusion')
 parser.add_argument("--voxel_size", help="voxel edge size in [mm]",
@@ -38,13 +38,7 @@ config_file = parser.parse_args().config_file
 if not os.path.isfile(config_file):
     config_file = parser.parse_args().res_fldr + 'settings.yaml'
 
-vxl_size =  numpy.array( parser.parse_args().voxel_size )
-try:
-    if len(vxl_size)!=3:
-        vxl_size = numpy.array( [vxl_size[0],vxl_size[0],vxl_size[0]], dtype=numpy.float )
-except:
-    vxl_size = numpy.array( [vxl_size,vxl_size,vxl_size], dtype=numpy.float )
-    
+vxl_size = parser.parse_args().voxel_size
 bckg_val = parser.parse_args().background_value
 
 configs = IO_fcts.basic_flow_config_reader_yml(config_file, parser)
@@ -118,14 +112,14 @@ except ValueError:
 # file << myvar
 
 # %% CONVERT FE DATA TO IMAGE
-img_coord_min = numpy.int32(numpy.floor(numpy.min(mesh.coordinates(),axis=0)-vxl_size))
-img_coord_max = numpy.int32(numpy.ceil( numpy.max(mesh.coordinates(),axis=0)+vxl_size))
+img_coord_min = numpy.int32(numpy.floor(numpy.min(mesh.coordinates(), axis=0)))-1
+img_coord_max = numpy.int32(numpy.ceil(numpy.max(mesh.coordinates(), axis=0)))+vxl_size
 
-x = numpy.arange(img_coord_min[0], img_coord_max[0], vxl_size[0])
-y = numpy.arange(img_coord_min[1], img_coord_max[1], vxl_size[1])
-z = numpy.arange(img_coord_min[2], img_coord_max[2], vxl_size[2])
-img_coord_max = numpy.array([x.max(),y.max(),z.max()],dtype=int)
-nx,ny,nz = len(x), len(y), len(z)
+x = numpy.arange(img_coord_min[0], img_coord_max[0], vxl_size)
+y = numpy.arange(img_coord_min[1], img_coord_max[1], vxl_size)
+z = numpy.arange(img_coord_min[2], img_coord_max[2], vxl_size)
+img_coord_max = numpy.array([x.max(), y.max(), z.max()], dtype=int)
+nx, ny, nz = len(x), len(y), len(z)
 
 # TODO: speed up image recovery
 if vartype == 'scalar':
@@ -160,10 +154,10 @@ elif vartype == 'tensor':
                     img_data[i, j, k, :] = numpy.ones(9)*bckg_val
 
 affine_matrix = numpy.eye(4)
-for i in range(3): affine_matrix[i,i] = vxl_size[i]
-affine_matrix[:3,-1] = img_coord_min+1
+affine_matrix[:3, :3] = vxl_size*affine_matrix[:3, :3]
+affine_matrix[:3, -1] = img_coord_min+1
 img = nib.Nifti1Image(img_data, affine_matrix)
-nib.save(img, configs['output']['res_fldr'] + my_variable +'.nii.gz')
+nib.save(img, configs['output']['res_fldr'] + my_variable + '.nii.gz')
 
 if parser.parse_args().save_figure:
     dims = len(list(img_data.shape))

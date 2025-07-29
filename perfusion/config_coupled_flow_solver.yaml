@@ -28,9 +28,17 @@ output:
   res_fldr: /perfusion/
   res_vars:
     K1: null
+    K2: null
+    K3: null
+    beta12: null
+    beta23: null
     perfusion: null
     press1: null
+    press2: null
+    press3: null
     vel1: null
+    vel2: null
+    vel3: null
   save_tissue_files: false
 physical:
   K1gm_ref: 0.0021059
@@ -48,7 +56,7 @@ simulation:
   fe_degr: 2
   feedback_limit: 0.1
   model_type: acv
-  perfusion_timestep_hours: 0.25
+  perfusion_timestep_hours: 0.5
   run_time_series_analysis: true
   save_time_series: true
   simulation_time_hours: 24

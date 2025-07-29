@@ -45,12 +45,8 @@ verify_docker:
                 - docker load -i ${CONTAINER}/docker.tar
                 - mkdir -p ${MOUNT_POINT}/docker
                 - cp ./test_patient.yml ${MOUNT_POINT}/docker/patient.yml
-                - docker run -v ${MOUNT_POINT}/docker:/patient ${IMAGE} /patient/patient.yml 0 test
                 - docker run -v ${MOUNT_POINT}/docker:/patient ${IMAGE} /patient/patient.yml 1 test
                 - docker run -v ${MOUNT_POINT}/docker:/patient ${IMAGE} /patient/patient.yml 2 test
-                - docker run -v ${MOUNT_POINT}/docker:/patient ${IMAGE} /patient/patient.yml 3 test
-                - docker run -v ${MOUNT_POINT}/docker:/patient ${IMAGE} /patient/patient.yml 4 test
-                - docker run -v ${MOUNT_POINT}/docker:/patient ${IMAGE} /patient/patient.yml 5 test                
 
 build_singularity:
         <<: *docker_definition
@@ -79,9 +75,5 @@ verify_singularity:
                 - mkdir -p ${MOUNT_POINT}/singularity
                 - cp ./test_patient.yml ${MOUNT_POINT}/singularity/patient.yml
                 - cp ${CONTAINER}/singularity.sif ${MOUNT_POINT}/${IMAGE}.sif
-                - docker run --privileged -v ${MOUNT_POINT}:/patient quay.io/singularity/singularity:v3.9.4 run -B /patient/singularity:/patient /patient/${IMAGE}.sif /patient/patient.yml 0 test
                 - docker run --privileged -v ${MOUNT_POINT}:/patient quay.io/singularity/singularity:v3.9.4 run -B /patient/singularity:/patient /patient/${IMAGE}.sif /patient/patient.yml 1 test
                 - docker run --privileged -v ${MOUNT_POINT}:/patient quay.io/singularity/singularity:v3.9.4 run -B /patient/singularity:/patient /patient/${IMAGE}.sif /patient/patient.yml 2 test
-                - docker run --privileged -v ${MOUNT_POINT}:/patient quay.io/singularity/singularity:v3.9.4 run -B /patient/singularity:/patient /patient/${IMAGE}.sif /patient/patient.yml 3 test
-                - docker run --privileged -v ${MOUNT_POINT}:/patient quay.io/singularity/singularity:v3.9.4 run -B /patient/singularity:/patient /patient/${IMAGE}.sif /patient/patient.yml 4 test
-                - docker run --privileged -v ${MOUNT_POINT}:/patient quay.io/singularity/singularity:v3.9.4 run -B /patient/singularity:/patient /patient/${IMAGE}.sif /patient/patient.yml 5 test

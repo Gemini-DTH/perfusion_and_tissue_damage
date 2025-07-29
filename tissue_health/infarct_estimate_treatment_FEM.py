@@ -136,7 +136,7 @@ scaling = K(subdomains=subdomains, WM=perfusion_scale, GM=1, degree=0)
 tissue_space = FunctionSpace(mesh, "DG", 0)
 hypoxia_estimate_fem = 1-1/(1+(exp(-(ks1*perfusion_stroke*scaling+ks2)))**2)
 
-H2 = project(hypoxia_estimate_fem, tissue_space, solver_type='bicgstab', preconditioner_type='petsc_amg')
+H2 = project(hypoxia_estimate_fem, tissue_space, solver_type='bicgstab', preconditioner_type='amg')
 
 if configs['output']['time_series']:
     file = XDMFFile(configs['output']['res_fldr']+'H.xdmf')
@@ -182,7 +182,7 @@ T = Function(T_space)
 problem = LinearVariationalProblem(a, L, T)
 solver = LinearVariationalSolver(problem)
 solver.parameters["linear_solver"] = "bicgstab"
-solver.parameters["preconditioner"] = 'petsc_amg'
+solver.parameters["preconditioner"] = "amg"
 
 start1 = time.time()
 # arrival simulation
@@ -204,7 +204,7 @@ for n in tqdm(range(arrival_steps)):
 
 dead, toxic = T.split()
 infarct = project(conditional(lt(dead, Constant(core_threshold)), Constant(0.0), Constant(1.0)), K2_space,
-                  solver_type='bicgstab', preconditioner_type='petsc_amg')
+                  solver_type='bicgstab', preconditioner_type='amg')
 core = assemble(infarct * dx) * 1e-3  # mL
 if rank == 0:
     print('The core volume at the start of treatment is '+str(core)+' mL')
@@ -212,7 +212,7 @@ if rank == 0:
 # # update hypoxic fraction due to treatment
 if recovery_steps > 0:
     hypoxia_estimate_fem = 1-1/(1+(exp(-(ks1*perfusion_treatment*scaling+ks2)))**2)
-    H2_new = project(hypoxia_estimate_fem, tissue_space, solver_type='bicgstab', preconditioner_type='petsc_amg')
+    H2_new = project(hypoxia_estimate_fem, tissue_space, solver_type='bicgstab', preconditioner_type='amg')
     H2.assign(H2_new)
 
     # recovery simulation
@@ -236,7 +236,7 @@ dead, toxic = T.split()
 end1 = time.time()
 
 infarct = project(conditional(lt(dead, Constant(core_threshold)), Constant(0.0), Constant(1.0)), K2_space,
-                  solver_type='bicgstab', preconditioner_type='petsc_amg')
+                  solver_type='bicgstab', preconditioner_type='amg')
 core = assemble(infarct * dx) * 1e-3  # mL
 
 # with XDMFFile(configs['output']['res_fldr']+'infarct_'+str(arrival_time)+'_'+str(recovery_time)+'.xdmf') as myfile:

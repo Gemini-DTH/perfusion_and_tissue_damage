@@ -5,7 +5,7 @@ input:
   arrival_time: 3
   recovery_time: 120
 output:
-  res_fldr: ../VP_results/p0000/tissue_damage_RMCAo/
+  res_fldr: ../VP_results/p0000/tissue_damage/
 parameter:
   kf: 0.00060644
   kt: 0.00429805

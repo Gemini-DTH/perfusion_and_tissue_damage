@@ -15,10 +15,11 @@ perfusion_dir = 'pf_sim'
 bc_fn = 'boundary_conditions_file.csv'
 # filename used for perfusion output required for simplified infarct values
 pf_outfile = 'perfusion.xdmf'
-nifti_pf_outfile = "perfusion.nii.gz"
 # directory for where to generate and store patient brain meshes
 PERFUSION_ROOT = "/app/perfusion/"
+# PERFUSION_ROOT = "./perfusion/"
 MAIN_ROOT = "/app/"
+# MAIN_ROOT = "./"
 
 
 class API(API):
@@ -48,7 +49,7 @@ class API(API):
             print(f"Evaluating: '{' '.join(brain_mesh_cmd)}'", flush=True)
             subprocess.run(brain_mesh_cmd, check=True, cwd=PERFUSION_ROOT)
 
-            vp_mesh_cmd = [
+            VP_mesh_cmd = [
                 "python3",
                 "VP_mesh_prep.py",
                 "--bsl_msh_fldr",
@@ -59,8 +60,8 @@ class API(API):
                 str(self.patient['sex']),
                 "--forced"
             ]
-            print(f"Evaluating: '{' '.join(vp_mesh_cmd)}'", flush=True)
-            subprocess.run(vp_mesh_cmd, check=True, cwd=MAIN_ROOT)
+            print(f"Evaluating: '{' '.join(VP_mesh_cmd)}'", flush=True)
+            subprocess.run(VP_mesh_cmd, check=True, cwd=MAIN_ROOT)
 
         if not permeability_dir.exists():
             # generate permeability meshes after clustering
@@ -121,6 +122,14 @@ class API(API):
         print(f"Evaluating: '{' '.join(solve_cmd)}'", flush=True)
         subprocess.run(solve_cmd, check=True, cwd=PERFUSION_ROOT)
 
+        # terminate baseline scenario
+        if self.event_id == 0:
+            return
+
+        # extract settings
+        if not self.current_model.get('evaluate_infarct_estimates', False):
+            return
+
         labels = [event.get('event') for event in self.events]
 
         # baseline scenario result directories
@@ -129,36 +138,12 @@ class API(API):
         baseline = baseline.joinpath(pf_outfile)
 
         # occluded scenario assumed to be the current result
-        event_labels = [event.get('event') for event in self.events]
-        occluded = self.patient_dir.joinpath(event_labels[self.event_id])
+        occluded = self.patient_dir.joinpath(labels[1])
         occluded = occluded.joinpath(perfusion_dir)
         occluded = occluded.joinpath(pf_outfile)
 
         for path in [baseline, occluded]:
             assert os.path.exists(path), f"File not found: '{path}'."
-
-        # convert perfusion FEM result to NIFTI
-        res2img_cmd = [
-            "python3",
-            "convert_res2img.py",
-            "--config_file",
-            f"{str(perfusion_config_file)}",
-            "--res_fldr",
-            f"{res_folder}/",
-            "--variable",
-            "perfusion",
-            "--save_figure",
-        ]
-        print(f"Evaluating: '{' '.join(res2img_cmd)}'", flush=True)
-        subprocess.run(res2img_cmd, check=True, cwd=PERFUSION_ROOT)
-
-        # terminate baseline scenario
-        if self.event_id == 0:
-            return
-
-        # extract settings
-        if not self.current_model.get('evaluate_infarct_estimates', False):
-            return
 
         # evaluate preliminary infarct volumes at multiple thresholds
         infarct_cmd = [
@@ -180,32 +165,21 @@ class API(API):
         print(f"Evaluating: '{' '.join(infarct_cmd)}'", flush=True)
         subprocess.run(infarct_cmd, check=True, cwd=PERFUSION_ROOT)
 
-        shutil.copy(res_folder + "/perfusion_outcome.yml", self.patient_dir)
-
-        # baseline scenario result directories
-        baseline = self.patient_dir.joinpath(labels[0])
-        baseline = baseline.joinpath(perfusion_dir)
-        healthy_file = baseline.joinpath(nifti_pf_outfile)
-
-        # occluded scenario assumed to be the current result
-        event_labels = [event.get('event') for event in self.events]
-        occluded = self.patient_dir.joinpath(event_labels[self.event_id])
-        occluded = occluded.joinpath(perfusion_dir)
-        occluded_file = occluded.joinpath(nifti_pf_outfile)
-
-        lesion_comp_from_img_cmd = [
+        # convert perfusion FEM result to NIFTI
+        res2img_cmd = [
             "python3",
-            "lesion_comp_from_img.py",
-            "--healthy_file",
-            f"{healthy_file}",
-            "--occluded_file",
-            f"{occluded_file}",
+            "convert_res2img.py",
+            "--config_file",
+            f"{str(perfusion_config_file)}",
             "--res_fldr",
             f"{res_folder}/",
+            "--variable",
+            "perfusion",
             "--save_figure",
         ]
-        print(f"Evaluating: '{' '.join(lesion_comp_from_img_cmd)}'", flush=True)
-        subprocess.run(lesion_comp_from_img_cmd, check=True, cwd=PERFUSION_ROOT)
+        print(f"Evaluating: '{' '.join(res2img_cmd)}'", flush=True)
+        subprocess.run(res2img_cmd, check=True, cwd=PERFUSION_ROOT)
+
 
     def example(self):
         # when running the example, we need to generate some dummy input
@@ -218,17 +192,17 @@ class API(API):
         # meshes by default. So, when running in CI/CD we extract the
         # compressed archive manually before running the event.
         import tarfile
-        tar = tarfile.open(os.path.join(MAIN_ROOT, "brain_meshes.tar.xz"), "r:xz")
-        tar.extractall(os.path.join(self.patient_dir, "tmp"))
+        tar = tarfile.open("/app/brain_meshes.tar.xz", "r:xz")
+        tar.extractall("/patient/tmp")
         tar.close()
 
         # move the contents to the expected brain mesh location
         import shutil
         res_bf_folder = self.result_dir.joinpath(f"{blood_flow_dir}")
         os.makedirs(res_bf_folder, exist_ok=True)
-        files = os.listdir(os.path.join(self.patient_dir, "tmp/brain_meshes/b0000"))
+        files = os.listdir("/patient/tmp/brain_meshes/b0000")
         for f in files:
-            shutil.move(os.path.join(self.patient_dir, "tmp/brain_meshes/b0000", f), str(res_bf_folder))
+            shutil.move(os.path.join("/patient/tmp/brain_meshes/b0000", f), str(res_bf_folder))
 
         # Renaming the files
         os.rename(str(res_bf_folder.joinpath("clustered.xdmf")),
