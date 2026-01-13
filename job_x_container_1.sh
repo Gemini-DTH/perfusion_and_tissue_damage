@@ -7,16 +7,24 @@
 #SBATCH --time=12:00:00
 #SBATCH -A plggemini2025-cpu
 #SBATCH -p plgrid
-#SBATCH --output="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage/out_k.out"
-#SBATCH --error="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage/err_k.err"
+
+set -euo pipefail
+
+cd "$SCRATCHDIR"
+
+echo "PWD=$(pwd)"
+echo "Listing scratch:"
+ls -lah
+
 
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
-BLOODFLOW_DIR="$BASE_DIR/bloodflow/DataFiles/DefaultPatient"
-SCRIPT_DIR="$BASE_DIR/perfusion"    
+   
 
 singularity exec \
     --bind "$BASE_DIR:/mnt/project" \
+    --bind "$SCRATCHDIR/patient_0:/mnt/inputs" \
+    --bind "$SCRATCHDIR/patient_0/bf_sim:/mnt/results" 
     --cleanenv \
     "$CONTAINER" \
     bash -c "
@@ -31,7 +39,15 @@ singularity exec \
 	python3 -m pip install --user --no-cache-dir numpy==1.24.4
         
         cd /mnt/project/
-        cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_0/"
-        
-	
+        #cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_0/"
+        python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
+     
     "
+echo "=== Zip results ==="
+rm -f results.zip
+zip -r results.zip results/
+
+echo "=== Stage out results.zip ==="
+{% stage_out results.zip %}
+
+echo "=== Done ==="
