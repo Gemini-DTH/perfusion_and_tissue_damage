@@ -19,8 +19,8 @@ CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
 
 singularity exec \
     --bind "$BASE_DIR:/mnt/project" \
-    --bind "$SCRATCHDIR/perfusion/patient_0:/mnt/inputs" \
-    --bind "$SCRATCHDIR/perfusion/patient_0/bf_sim:/mnt/results" 
+    --bind "$BASE_DIR/plgrid/plgggemini/perfusion_and_tissue_damage/perfusion/patient_0:/mnt/inputs" \
+    --bind "$BASE_DIR/plgrid/plgggemini/perfusion_and_tissue_damage/perfusion/patient_0/bf_sim:/mnt/results" 
     --cleanenv \
     "$CONTAINER" \
     bash -c "
