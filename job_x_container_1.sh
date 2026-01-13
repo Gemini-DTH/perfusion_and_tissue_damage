@@ -17,8 +17,13 @@ echo "Listing scratch:"
 ls -lah
 
 echo "Stage in inputs..."
-{% stage_in inputs %}
+{% stage_in DefaultPatient_old.zip %}
 
+mkdir -p DefaultPatient_old
+unzip -q DefaultPatient_old.zip -d inputs
+
+echo "Inputs after unzip:"
+find DefaultPatient_old -maxdepth 2 -type f | head -n 30
 
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
@@ -43,7 +48,7 @@ singularity exec \
         
         cd /mnt/project/
         #cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_0/"
-        python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./mnt/patient_0/"
+        python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./mnt/DefaultPatient_old/"
         
     "
 {% stage_out results %}
