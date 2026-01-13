@@ -12,10 +12,6 @@ set -euo pipefail
 
 cd "$SCRATCHDIR"
 
-echo "PWD=$(pwd)"
-echo "Listing scratch:"
-ls -lah
-
 
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
@@ -23,8 +19,8 @@ CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
 
 singularity exec \
     --bind "$BASE_DIR:/mnt/project" \
-    --bind "$SCRATCHDIR/patient_0:/mnt/inputs" \
-    --bind "$SCRATCHDIR/patient_0/bf_sim:/mnt/results" 
+    --bind "$SCRATCHDIR/perfusion/patient_0:/mnt/inputs" \
+    --bind "$SCRATCHDIR/perfusion/patient_0/bf_sim:/mnt/results" 
     --cleanenv \
     "$CONTAINER" \
     bash -c "
