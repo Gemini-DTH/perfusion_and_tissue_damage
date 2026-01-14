@@ -11,6 +11,7 @@
 #SBATCH --error="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage/err_k.err"
 
 set -e
+cd $SCRATCHDIR
 
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
