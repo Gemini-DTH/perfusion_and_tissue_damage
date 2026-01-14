@@ -1,3 +1,4 @@
+#!/bin/bash -l
 #SBATCH -J fenics_simulation
 #SBATCH -N 4
 #SBATCH --ntasks-per-node=1
