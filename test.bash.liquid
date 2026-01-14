@@ -10,6 +10,10 @@
 #SBATCH --output="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage/out_k.out"
 #SBATCH --error="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage/err_k.err"
 
+set -e
+cd $SCRATCHDIR
+{% stage_in Model_parameters.txt %}
+
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
 BLOODFLOW_DIR="$BASE_DIR/bloodflow/DataFiles/DefaultPatient"
