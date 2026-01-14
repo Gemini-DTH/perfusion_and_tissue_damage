@@ -12,6 +12,7 @@ set -euo pipefail
 
 cd "$SCRATCHDIR"
 
+{% stage_in_artifact Model_parameters.txt %}
 
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
@@ -39,11 +40,4 @@ singularity exec \
         python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
      
     "
-echo "=== Zip results ==="
-rm -f results.zip
-zip -r results.zip results/
 
-echo "=== Stage out results.zip ==="
-{% stage_out results.zip %}
-
-echo "=== Done ==="
