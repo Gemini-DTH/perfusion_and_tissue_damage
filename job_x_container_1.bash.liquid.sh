@@ -12,7 +12,7 @@ set -e
 
 cd $SCRATCHDIR
 
-{% stage_in Model_parameters.txt %}
+{% stage_in_artifact Model_parameters.txt %}
 
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
