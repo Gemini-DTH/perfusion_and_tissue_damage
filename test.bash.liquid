@@ -52,17 +52,7 @@ singularity exec \
 #cp "$BASE_DIR/perfusion/patient_0/bf_sim/Model_parameters.txt" ./Model_parameters.txt
 
 cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" ./Clots.txt
-
-if [ -f "$BASE_DIR/perfusion/patient_0/bf_sim/Topology.vtp" ]; then
-  cp "$BASE_DIR/perfusion/patient_0/bf_sim/Topology.vtp" ./Topology.vtp
-elif [ -f "$BASE_DIR/perfusion/patient_0/Topology.vtp" ]; then
-  cp "$BASE_DIR/perfusion/patient_0/Topology.vtp" ./Topology.vtp
-else
-  echo "Model_parameters.txt not found"
-  ls -lah "$BASE_DIR/perfusion/patient_0/" | head
-  ls -lah "$BASE_DIR/perfusion/patient_0/bf_sim/" | head
-  exit 1
-fi
+cp "$BASE_DIR/perfusion/patient_0/Topology.vtp" ./Topology.vtp
 
 {% stage_out Clots.txt %}
 {% stage_out Topology.vtp %}
