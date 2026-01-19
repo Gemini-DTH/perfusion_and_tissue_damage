@@ -50,6 +50,6 @@ singularity exec \
 #zip -r patient0.zip "$BASE_DIR/perfusion/patient_0"
 
 cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" ./Clots.txt
-cp "$BASE_DIR/perfusion/patient_0/bf_sim/Topology.vtk" ./Topology.vtk
+cp "$BASE_DIR/perfusion/patient_0/bf_sim/Model_parameters.txt" ./Model_parameters.txt
 {% stage_out Clots.txt %}
-{% stage_out Topology.vtk %}
+{% stage_out Model_parameters.txt %}
