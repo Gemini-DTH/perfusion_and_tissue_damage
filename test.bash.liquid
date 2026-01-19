@@ -45,8 +45,8 @@ singularity exec \
 		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
 		cd perfusion
 		python3 convert_msh2hdf5.py "./patient_0/bf_sim/clustered_mesh.msh"  "./patient_0/bf_sim/clustered_mesh"
-		#rm -f "./patient_0/bf_sim/Coupled_resistance.csv"
-		#python3 coupled_flow_solver.py
+		rm -f "./patient_0/bf_sim/Coupled_resistance.csv"
+		python3 coupled_flow_solver.py
 		#cp -TR  ./patient_0/perfusion "./patient_0/perfusion_healthy"
 		#python3 coupled_flow_solver.py
 		#cp -TR ./patient_0/perfusion "./patient_0/perfusion_stroke"
