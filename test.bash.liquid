@@ -57,7 +57,9 @@ singularity exec \
 cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" ./Clots.txt
 cp "$BASE_DIR/perfusion/patient_0/bf_sim/Topology.vtp" ./Topology.vtp
 cp "$BASE_DIR/perfusion/patient_0/perfusion_healthy/perfusion.xdmf" ./perfusion_healthy.xdmf
+cp "$BASE_DIR/perfusion/patient_0/perfusion_healthy/perfusion.h5" ./perfusion_healthy.h5
 cp "$BASE_DIR/perfusion/patient_0/perfusion_stroke/perfusion.xdmf" ./perfusion_stroke.xdmf
+cp "$BASE_DIR/perfusion/patient_0/perfusion_stroke/perfusion.h5" ./perfusion_stroke.h5
 cp "$BASE_DIR/perfusion/patient_0/perfusion/vol_infarct_values_thresholds.csv" ./vol_infarct_values_thresholds.csv
 zip -r patient0.zip "$BASE_DIR/perfusion/patient_0"
 
@@ -65,6 +67,8 @@ zip -r patient0.zip "$BASE_DIR/perfusion/patient_0"
 {% stage_out Topology.vtp %}
 {% stage_out perfusion_healthy.xdmf %}
 {% stage_out perfusion_stroke.xdmf %}
+{% stage_out perfusion_healthy.h5 %}
+{% stage_out perfusion_stroke.h5 %}
 {% stage_out vol_infarct_values_thresholds.csv %}
 {% stage_out patient0.zip %}
 
