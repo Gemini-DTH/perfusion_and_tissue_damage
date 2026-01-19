@@ -48,6 +48,6 @@ singularity exec \
     "
 
 zip -r patient0.zip "$BASE_DIR/perfusion/patient_0"
+{% stage_out patient0.zip %}
 
-cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" ./Clots.txt
-{% stage_out Clots.txt %}
+#cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" ./Clots.txt
