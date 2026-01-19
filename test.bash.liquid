@@ -47,10 +47,24 @@ singularity exec \
 	
     "
 
-zip -r patient0.zip "$BASE_DIR/perfusion/patient_0"
-{% stage_out patient0.zip %}
-
+#zip -r patient0.zip "$BASE_DIR/perfusion/patient_0"
 #cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" ./Clots.txt
 #cp "$BASE_DIR/perfusion/patient_0/bf_sim/Model_parameters.txt" ./Model_parameters.txt
+
+cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" ./Clots.txt
+
+if [ -f "$BASE_DIR/perfusion/patient_0/bf_sim/Model_parameters.txt" ]; then
+  cp "$BASE_DIR/perfusion/patient_0/bf_sim/Model_parameters.txt" ./Model_parameters.txt
+elif [ -f "$BASE_DIR/perfusion/patient_0/Model_parameters.txt" ]; then
+  cp "$BASE_DIR/perfusion/patient_0/Model_parameters.txt" ./Model_parameters.txt
+else
+  echo "Model_parameters.txt not found"
+  ls -lah "$BASE_DIR/perfusion/patient_0/" | head
+  ls -lah "$BASE_DIR/perfusion/patient_0/bf_sim/" | head
+  exit 1
+fi
+
+{% stage_out Clots.txt %}
+{% stage_out Model_parameters.txt %}
 
 
