@@ -57,12 +57,9 @@ singularity exec \
     "
 
 cp "$BASE_DIR/perfusion/patient_0/bf_sim/Model_parameters.txt" "$SCRATCHDIR/Model_parameters.txt"
-cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" "$SCRATCHDIR/Clots.txt"
 
 cd "$BASE_DIR/perfusion" || exit 1
 zip -r "$SCRATCHDIR/patient0.zip" "patient_0"
 
 cd "$SCRATCHDIR" || exit 1
 {% stage_out Model_parameters.txt %}
-{% stage_out Clots.txt %}
-{% stage_out patient0.zip %}
