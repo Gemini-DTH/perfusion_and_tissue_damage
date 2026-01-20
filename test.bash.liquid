@@ -15,6 +15,7 @@ cd $SCRATCHDIR
 
 {% stage_in_by_filename config.xml %}
 {% stage_in_by_filename Clots.txt %}
+{% stage_in_by_filename Model_parameters.txt %}
 
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
@@ -38,9 +39,10 @@ singularity exec \
 	python3 -m pip install --user --no-cache-dir numpy==1.24.4
         
         cd /mnt/project/
-        #cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_0/"
-		#cp -f /mnt/scratch/config.xml ./perfusion/patient_0/config.xml
-		#cp -f /mnt/scratch/Clots.txt ./perfusion/patient_0/Clots.txt
+        cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_0/"
+		cp -f /mnt/scratch/config.xml ./perfusion/patient_0/config.xml
+		cp -f /mnt/scratch/Clots.txt ./perfusion/patient_0/Clots.txt
+		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/patient_0/bf_sim/Model_parameters.txt
 
 		#python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
 		#cd perfusion
@@ -54,6 +56,8 @@ singularity exec \
 
     "
 
+cp "$BASE_DIR/perfusion/patient_0/bf_sim/Model_parameters.txt" ./Model_parameters.txt
 cd "$BASE_DIR/perfusion" || exit 1
 zip -r patient0.zip "patient_0"
+{% stage_out Model_parameters.txt %}
 {% stage_out patient0.zip %}
