@@ -60,7 +60,7 @@ cp "$BASE_DIR/perfusion/patient_0/bf_sim/Model_parameters.txt" ./Model_parameter
 cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" ./Clots.txt
 
 cd "$BASE_DIR/perfusion" || exit 1
-zip -r "$SCRATCHDIR/patient0.zip" "patient_0"
+zip -r "$SCRATCHDIR/patient0.zip" ./patient_0
 
 cd "$SCRATCHDIR" || exit 1
 {% stage_out Model_parameters.txt %}
