@@ -44,15 +44,15 @@ singularity exec \
 		cp -f /mnt/scratch/Clots.txt ./perfusion/patient_0/Clots.txt
 		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/patient_0/bf_sim/Model_parameters.txt
 
-		#python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
-		#cd perfusion
-		#python3 convert_msh2hdf5.py "./patient_0/bf_sim/clustered_mesh.msh"  "./patient_0/bf_sim/clustered_mesh"
-		#rm -f "./patient_0/bf_sim/Coupled_resistance.csv"
-		#python3 coupled_flow_solver.py
-		#cp -TR  ./patient_0/perfusion "./patient_0/perfusion_healthy"
-		#python3 coupled_flow_solver.py
-		#cp -TR ./patient_0/perfusion "./patient_0/perfusion_stroke"
-		#python3 infarct_calculation_thresholds.py --baseline "./patient_0/perfusion_healthy/perfusion.xdmf" --occluded "./patient_0/perfusion_stroke/perfusion.xdmf"
+		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
+		cd perfusion
+		python3 convert_msh2hdf5.py "./patient_0/bf_sim/clustered_mesh.msh"  "./patient_0/bf_sim/clustered_mesh"
+		rm -f "./patient_0/bf_sim/Coupled_resistance.csv"
+		python3 coupled_flow_solver.py
+		cp -TR  ./patient_0/perfusion "./patient_0/perfusion_healthy"
+		python3 coupled_flow_solver.py
+		cp -TR ./patient_0/perfusion "./patient_0/perfusion_stroke"
+		python3 infarct_calculation_thresholds.py --baseline "./patient_0/perfusion_healthy/perfusion.xdmf" --occluded "./patient_0/perfusion_stroke/perfusion.xdmf"
 
     "
 
