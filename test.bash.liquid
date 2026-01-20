@@ -14,7 +14,6 @@ set -e
 cd $SCRATCHDIR
 
 {% stage_in_by_filename config.xml %}
-{% stage_in_by_filename Model_parameters.txt %}
 {% stage_in_by_filename Clots.txt %}
 
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
@@ -39,12 +38,11 @@ singularity exec \
 	python3 -m pip install --user --no-cache-dir numpy==1.24.4
         
         cd /mnt/project/
-        cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_0/"
-		cp -f /mnt/scratch/config.xml ./perfusion/patient_0/config.xml
-		cp -f /mnt/scratch/Clots.txt ./perfusion/patient_0/Clots.txt
-		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/patient_0/bf_sim/Model_parameters.txt
+        #cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_0/"
+		#cp -f /mnt/scratch/config.xml ./perfusion/patient_0/config.xml
+		#cp -f /mnt/scratch/Clots.txt ./perfusion/patient_0/Clots.txt
 
-		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
+		#python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
 		#cd perfusion
 		#python3 convert_msh2hdf5.py "./patient_0/bf_sim/clustered_mesh.msh"  "./patient_0/bf_sim/clustered_mesh"
 		#rm -f "./patient_0/bf_sim/Coupled_resistance.csv"
@@ -57,12 +55,19 @@ singularity exec \
     "
 
 cp "$BASE_DIR/perfusion/patient_0/bf_sim/Clots.txt" ./Clots.txt
-cp "$BASE_DIR/perfusion/patient_0/bf_sim/Model_parameters.txt" ./Model_parameters.txt
+cp "$BASE_DIR/perfusion/patient_0/bf_sim/Topology.vtp" ./Topology.vtp
+cp "$BASE_DIR/perfusion/patient_0/perfusion_healthy/perfusion.xdmf" ./perfusion_healthy.xdmf
+cp "$BASE_DIR/perfusion/patient_0/perfusion_healthy/perfusion.h5" ./perfusion_healthy.h5
+cp "$BASE_DIR/perfusion/patient_0/perfusion_stroke/perfusion.xdmf" ./perfusion_stroke.xdmf
+cp "$BASE_DIR/perfusion/patient_0/perfusion_stroke/perfusion.h5" ./perfusion_stroke.h5
+cp "$BASE_DIR/perfusion/patient_0/perfusion/vol_infarct_values_thresholds.csv" ./vol_infarct_values_thresholds.csv
+zip -r patient0.zip "$BASE_DIR/perfusion/patient_0"
 
 {% stage_out Clots.txt %}
-{% stage_out Model_parameters.txt %}
-
-
-
-
-
+{% stage_out Topology.vtp %}
+{% stage_out perfusion_healthy.xdmf %}
+{% stage_out perfusion_stroke.xdmf %}
+{% stage_out perfusion_healthy.h5 %}
+{% stage_out perfusion_stroke.h5 %}
+{% stage_out vol_infarct_values_thresholds.csv %}
+{% stage_out patient0.zip %}
