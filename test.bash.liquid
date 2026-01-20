@@ -42,7 +42,7 @@ singularity exec \
         #cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_0/"
 		#cp -f /mnt/scratch/config.xml ./perfusion/patient_0/config.xml
 		#cp -f /mnt/scratch/Clots.txt ./perfusion/patient_0/Clots.txt
-		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/patient_0/bf_sim/Model_parameters.txt
+		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/patient_0/bf_sim/Model_parameters.txt
 
 		#python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
 		#cd perfusion
