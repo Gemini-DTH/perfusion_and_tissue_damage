@@ -76,5 +76,5 @@ zip -r "$SCRATCHDIR/patient_${SLURM_JOB_ID}.zip" ./patient_${SLURM_JOB_ID}
 cd "$SCRATCHDIR" || exit 1
 {% stage_out Model_parameters.txt %}
 {% stage_out Clots.txt %}
-{% stage_out patient_${SLURM_JOB_ID} %}
+#{% stage_out patient_${SLURM_JOB_ID} %}
 
