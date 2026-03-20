@@ -39,12 +39,12 @@ singularity exec \
 	python3 -m pip install --user --no-cache-dir numpy==1.24.4
         
         cd /mnt/project/
-		cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_${SLURM_JOB_ID}/"
+		cp -TR ./bloodflow/DataFiles/Clots "./perfusion/Clots_${SLURM_JOB_ID}/"
 
     "
 
 cd "$BASE_DIR/perfusion" || exit 1
-zip -r "$SCRATCHDIR/patient_${SLURM_JOB_ID}.zip" ./patient_${SLURM_JOB_ID}
+zip -r "$SCRATCHDIR/Clots_${SLURM_JOB_ID}.zip" ./Clots_${SLURM_JOB_ID}
 
-{% stage_out patient_${SLURM_JOB_ID} %}
+{% stage_out Clots_${SLURM_JOB_ID}.zip %}
 
