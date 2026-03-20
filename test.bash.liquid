@@ -45,8 +45,8 @@ singularity exec \
 		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/patient_$SLURM_JOB_ID/bf_sim/Model_parameters.txt
 
 		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_$SLURM_JOB_ID/"
-		cd perfusion
-		python3 convert_msh2hdf5.py "./patient_$SLURM_JOB_ID/bf_sim/clustered_mesh.msh"  "./patient_$SLURM_JOB_ID/bf_sim/clustered_mesh"
+		#cd perfusion
+		#python3 convert_msh2hdf5.py "./patient_$SLURM_JOB_ID/bf_sim/clustered_mesh.msh"  "./patient_$SLURM_JOB_ID/bf_sim/clustered_mesh"
 		#rm -f "./patient_$SLURM_JOB_ID/bf_sim/Coupled_resistance.csv"
     "
 
