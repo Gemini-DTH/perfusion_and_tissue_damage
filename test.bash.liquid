@@ -44,14 +44,14 @@ singularity exec \
 		cp -f /mnt/scratch/Clots.txt ./perfusion/patient_$SLURM_JOB_ID/Clots.txt
 		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/patient_$SLURM_JOB_ID/bf_sim/Model_parameters.txt
 
-		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_$SLURM_JOB_ID/"
-		#cd perfusion
-		#python3 convert_msh2hdf5.py "./patient_$SLURM_JOB_ID/bf_sim/clustered_mesh.msh"  "./patient_$SLURM_JOB_ID/bf_sim/clustered_mesh"
+		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_19644535/"
+		cd perfusion
+		python3 convert_msh2hdf5.py "./patient_19644535/bf_sim/clustered_mesh.msh"  "./patient_19644535/bf_sim/clustered_mesh"
 		#rm -f "./patient_$SLURM_JOB_ID/bf_sim/Coupled_resistance.csv"
     "
 
 cd "$BASE_DIR/perfusion"
-zip -r "$SCRATCHDIR/patient_$SLURM_JOB_ID.zip" ./patient_$SLURM_JOB_ID
+zip -r "$SCRATCHDIR/patient_19644535.zip" ./patient_19644535
 
 cd "$SCRATCHDIR"
-{% stage_out patient_$SLURM_JOB_ID.zip %}
+{% stage_out patient_19644535.zip %}
