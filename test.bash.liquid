@@ -43,8 +43,9 @@ singularity exec \
 
     "
 
-cd "$BASE_DIR/perfusion" || exit 1
-zip -r "$SCRATCHDIR/Clots_${SLURM_JOB_ID}.zip" ./Clots_${SLURM_JOB_ID}
+zip -r "$SCRATCHDIR/Clots_${SLURM_JOB_ID}.zip" "$BASE_DIR/perfusion/Clots_${SLURM_JOB_ID}"
 
-{% stage_out Clots_${SLURM_JOB_ID}.zip %}
+# Stage out the zip file
+echo "Staging out: $SCRATCHDIR/Clots_${SLURM_JOB_ID}.zip"
+{% stage_out "$SCRATCHDIR/Clots_${SLURM_JOB_ID}.zip" %}
 
