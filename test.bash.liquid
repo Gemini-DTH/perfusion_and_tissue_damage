@@ -39,7 +39,7 @@ singularity exec \
 	python3 -m pip install --user --no-cache-dir numpy==1.24.4
         
         cd /mnt/project/
-        cp -TR ./bloodflow/DataFiles/Clots_$SLURM_JOB_ID "./perfusion/Clots_$SLURM_JOB_ID/"
+        cp -TR ./bloodflow/DataFiles/Clots "./perfusion/Clots_$SLURM_JOB_ID/"
     "
 
 cd "$BASE_DIR/perfusion"
