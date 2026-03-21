@@ -41,10 +41,10 @@ singularity exec \
         
         cd /mnt/project/
 		
-        cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
-		cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
-		cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
-		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
+        #cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
+		#cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
+		#cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
+		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
 
 		#python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
 		#cd perfusion
@@ -59,25 +59,8 @@ singularity exec \
 		
     "
 
-# Move to the base directory where you want to zip
-cd "$BASE_DIR/perfusion" || exit 1
+cd "$BASE_DIR/perfusion"
+zip -r "$SCRATCHDIR/patient_19652767.zip" ./patient_19652767
 
-# Zip the patient directory into $SCRATCHDIR
-zip -r "$SCRATCHDIR/$PATIENT_DIR.zip" ./$PATIENT_DIR
-
-# Check if the zip file was created
-if [ -f "$SCRATCHDIR/$PATIENT_DIR.zip" ]; then
-    echo "Zip file created: $SCRATCHDIR/$PATIENT_DIR.zip"
-else
-    echo "Zip file not created!"
-    exit 1
-fi
-
-# Get the full absolute path of the zip file by concatenating $SCRATCHDIR and $PATIENT_DIR.zip
-ABSOLUTE_PATH=$(realpath "$SCRATCHDIR/$PATIENT_DIR.zip")
-
-# Print the absolute path
-echo "Full absolute path of the zip file: $ABSOLUTE_PATH"
-
-# Stage out the zip file to the pipeline output
-{% stage_out "$SCRATCHDIR/$PATIENT_DIR.zip" %}
+cd "$SCRATCHDIR"
+{% stage_out patient_19652767.zip %}
