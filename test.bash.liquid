@@ -73,9 +73,11 @@ else
     exit 1
 fi
 
-# Get the absolute path of the zip file
-ABSOLUTE_PATH=$(realpath "$PATIENT_DIR.zip")
+# Get the full absolute path of the zip file by concatenating $SCRATCHDIR and $PATIENT_DIR.zip
+ABSOLUTE_PATH=$(realpath "$SCRATCHDIR/$PATIENT_DIR.zip")
 
 # Print the absolute path
 echo "Full absolute path of the zip file: $ABSOLUTE_PATH"
-{% stage_out "$PATIENT_DIR.zip" %}
+
+# Stage out the zip file to the pipeline output
+{% stage_out "$SCRATCHDIR/$PATIENT_DIR.zip" %}
