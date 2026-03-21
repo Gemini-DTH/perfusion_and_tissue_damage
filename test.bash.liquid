@@ -42,11 +42,11 @@ singularity exec \
         cd /mnt/project/
 		
         cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
-		#cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
-		#cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
-		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
+		cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
+		cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
+		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
 
-		#python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
+		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
 		#cd perfusion
 		#python3 convert_msh2hdf5.py "./patient_$SLURM_JOB_ID/bf_sim/clustered_mesh.msh"  "./patient_$SLURM_JOB_ID/bf_sim/clustered_mesh"
 		#rm -f "./patient_$SLURM_JOB_ID/bf_sim/Coupled_resistance.csv"
