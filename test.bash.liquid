@@ -72,5 +72,10 @@ else
     echo "Zip file not created!"
     exit 1
 fi
-echo "Output directory for the zip file: $PATIENT_DIR.zip"
+
+# Get the absolute path of the zip file
+ABSOLUTE_PATH=$(realpath "$PATIENT_DIR.zip")
+
+# Print the absolute path
+echo "Full absolute path of the zip file: $ABSOLUTE_PATH"
 {% stage_out "$PATIENT_DIR.zip" %}
