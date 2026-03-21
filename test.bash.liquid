@@ -73,6 +73,4 @@ else
     exit 1
 fi
 
-# Stage out the zip file
-cd "$SCRATCHDIR" || exit 1
-{% stage_out "$SCRATCHDIR/patient_${SLURM_JOB_ID}.zip" %}
+{% stage_out "$PATIENT_DIR.zip" %}
