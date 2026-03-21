@@ -58,8 +58,20 @@ singularity exec \
 		
     "
 
-cd "$BASE_DIR/perfusion"
+# Move to the base directory where you want to zip
+cd "$BASE_DIR/perfusion" || exit 1
+
+# Zip the patient directory into $SCRATCHDIR
 zip -r "$SCRATCHDIR/$PATIENT_DIR.zip" ./$PATIENT_DIR
 
-cd "$SCRATCHDIR"
-{% stage_out $PATIENT_DIR.zip %}
+# Check if the zip file was created
+if [ -f "$SCRATCHDIR/$PATIENT_DIR.zip" ]; then
+    echo "Zip file created: $SCRATCHDIR/$PATIENT_DIR.zip"
+else
+    echo "Zip file not created!"
+    exit 1
+fi
+
+# Stage out the zip file
+cd "$SCRATCHDIR" || exit 1
+{% stage_out "$PATIENT_DIR.zip" %}
