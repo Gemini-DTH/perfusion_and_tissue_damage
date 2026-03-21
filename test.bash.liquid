@@ -41,7 +41,7 @@ singularity exec \
         
         cd /mnt/project/
 		
-        #cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
+        cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
 		#cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
 		#cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
 		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
@@ -60,7 +60,7 @@ singularity exec \
     "
 
 cd "$BASE_DIR/perfusion"
-zip -r "$SCRATCHDIR/patient_19652767.zip" ./patient_19652767
+zip -r "$SCRATCHDIR/$PATIENT_DIR.zip" ./$PATIENT_DIR
 
 cd "$SCRATCHDIR"
-{% stage_out patient_19652767.zip %}
+{% stage_out $PATIENT_DIR.zip %}
