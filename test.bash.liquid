@@ -49,7 +49,7 @@ singularity exec \
 		cd perfusion
 		python3 convert_msh2hdf5.py "./$PATIENT_DIR/bf_sim/clustered_mesh.msh"  "./$PATIENT_DIR/bf_sim/clustered_mesh"
 		rm -f "./$PATIENT_DIR/bf_sim/Coupled_resistance.csv"
-		python3 coupled_flow_solver.py
+		python3 coupled_flow_solver.py --res_fldr $PATIENT_DIR/perfusion/
 		cp -TR  ./$PATIENT_DIR/perfusion "./$PATIENT_DIR/perfusion_healthy"
 
     "
