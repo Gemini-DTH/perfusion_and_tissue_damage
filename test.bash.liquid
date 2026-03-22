@@ -40,24 +40,24 @@ singularity exec \
 	python3 -m pip install --user --no-cache-dir numpy==1.24.4
         
         cd /mnt/project/
-		cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
-		cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
-		cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
+		#cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
+		#cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
+		#cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
 		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
 
-		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
-		cd perfusion
-		python3 convert_msh2hdf5.py "./$PATIENT_DIR/bf_sim/clustered_mesh.msh"  "./$PATIENT_DIR/bf_sim/clustered_mesh"
-		rm -f "./$PATIENT_DIR/bf_sim/Coupled_resistance.csv"
-		python3 coupled_flow_solver.py --res_fldr $PATIENT_DIR/perfusion/ --mesh_file $PATIENT_DIR/bf_sim/clustered_mesh.xdmf --inlet_boundary_file $PATIENT_DIR/bf_sim/boundary_condition_file.csv
-		cp -TR  ./$PATIENT_DIR/perfusion "./$PATIENT_DIR/perfusion_healthy"
+		#python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
+		#cd perfusion
+		#python3 convert_msh2hdf5.py "./$PATIENT_DIR/bf_sim/clustered_mesh.msh"  "./$PATIENT_DIR/bf_sim/clustered_mesh"
+		#rm -f "./$PATIENT_DIR/bf_sim/Coupled_resistance.csv"
+		#python3 coupled_flow_solver.py --res_fldr $PATIENT_DIR/perfusion/ --mesh_file $PATIENT_DIR/bf_sim/clustered_mesh.xdmf --inlet_boundary_file $PATIENT_DIR/bf_sim/boundary_condition_file.csv
+		#cp -TR  ./$PATIENT_DIR/perfusion "./$PATIENT_DIR/perfusion_healthy"
 
     "
 
 cd "$BASE_DIR/perfusion"
-zip -r "$SCRATCHDIR/$PATIENT_DIR.zip" ./$PATIENT_DIR
+zip -r "$SCRATCHDIR/patient_19653793.zip" ./patient_19653793
 echo "Zip size:"
-du -sh "$SCRATCHDIR/$PATIENT_DIR.zip"
-ls -lh "$SCRATCHDIR/$PATIENT_DIR.zip"
+du -sh "$SCRATCHDIR/patient_19653793.zip"
+ls -lh "$SCRATCHDIR/patient_19653793.zip"
 cd "$SCRATCHDIR"
-{% stage_out $PATIENT_DIR.zip %}
+{% stage_out patient_19653793s.zip %}
