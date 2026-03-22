@@ -46,9 +46,9 @@ singularity exec \
 		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
 
 		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
+		cd perfusion
+		python3 convert_msh2hdf5.py "./patient_0/bf_sim/clustered_mesh.msh"  "./patient_0/bf_sim/clustered_mesh"
 
-		
-		
     "
 
 cd "$BASE_DIR/perfusion"
