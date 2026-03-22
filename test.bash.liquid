@@ -75,5 +75,8 @@ fi
 du -sh "$ZIP_PATH"
 ls -lh "$ZIP_PATH"
 
+cp "$ZIP_PATH" "$SCRATCHDIR/patient_output.zip" || exit 1
+ls -lh "$SCRATCHDIR/patient_output.zip"
+
 cd "$SCRATCHDIR" || exit 1
-{% stage_out $ZIP_NAME %}
+{% stage_out patient_output.zip %}
