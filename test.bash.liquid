@@ -47,7 +47,7 @@ singularity exec \
 
 		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
 		cd perfusion
-		python3 convert_msh2hdf5.py "./patient_0/bf_sim/clustered_mesh.msh"  "./patient_0/bf_sim/clustered_mesh"
+		python3 convert_msh2hdf5.py "./$PATIENT_DI/bf_sim/clustered_mesh.msh"  "./$PATIENT_DI/bf_sim/clustered_mesh"
 
     "
 
