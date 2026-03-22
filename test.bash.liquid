@@ -46,7 +46,7 @@ singularity exec \
     "
 
 cd "$BASE_DIR/perfusion"
-zip -r "$SCRATCHDIR/patient_0.zip" ./$PATIENT_DIR
+zip -r "$SCRATCHDIR/$PATIENT_DIR.zip" ./$PATIENT_DIR
 
 cd "$SCRATCHDIR"
-{% stage_out patient_0.zip %}
+{% stage_out $PATIENT_DIR.zip %}
