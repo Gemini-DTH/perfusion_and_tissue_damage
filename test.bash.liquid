@@ -41,14 +41,14 @@ singularity exec \
         
         cd /mnt/project/
 		
-        #cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
+        cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/patient_0/"
 		#cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
 		#cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
 		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
 
-		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_19653141/"
+		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/patient_0/"
 		#cd perfusion
-		#python3 convert_msh2hdf5.py "./patient_19653141/bf_sim/clustered_mesh.msh"  "./patient_19653141/bf_sim/clustered_mesh"
+		#python3 convert_msh2hdf5.py "./patient_0/bf_sim/clustered_mesh.msh"  "./patient_0/bf_sim/clustered_mesh"
 		#rm -f "./$PATIENT_DIR/bf_sim/Coupled_resistance.csv"
 		#python3 coupled_flow_solver.py
 		#cp -TR  ./$PATIENT_DIR/perfusion "./$PATIENT_DIR/perfusion_healthy"
@@ -60,7 +60,7 @@ singularity exec \
     "
 
 cd "$BASE_DIR/perfusion"
-zip -r "$SCRATCHDIR/$PATIENT_DIR.zip" ./$PATIENT_DIR
+zip -r "$SCRATCHDIR/patient_0.zip" ./$PATIENT_DIR
 
 cd "$SCRATCHDIR"
-{% stage_out $PATIENT_DIR.zip %}
+{% stage_out patient_0.zip %}
