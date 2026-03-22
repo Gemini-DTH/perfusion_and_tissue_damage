@@ -56,6 +56,8 @@ singularity exec \
 
 cd "$BASE_DIR/perfusion"
 zip -r "$SCRATCHDIR/$PATIENT_DIR.zip" ./$PATIENT_DIR
-
+echo "Zip size:"
+du -sh "$SCRATCHDIR/$PATIENT_DIR.zip"
+ls -lh "$SCRATCHDIR/$PATIENT_DIR.zip"
 cd "$SCRATCHDIR"
 {% stage_out $PATIENT_DIR.zip %}
