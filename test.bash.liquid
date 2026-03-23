@@ -66,7 +66,7 @@ cd "$BASE_DIR/perfusion" || exit 1
 #zip -r "$ZIP_PATH" "$PATIENT_DIR" || exit 1
 
 echo "===== Model_parameters.txt ====="
-cat $PATIENT_DIR/bf_sim/Model_parameters.txt
+cat "$BASE_DIR/perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt"
 echo "================================"
 
 #if [ -f "$ZIP_PATH" ]; then
