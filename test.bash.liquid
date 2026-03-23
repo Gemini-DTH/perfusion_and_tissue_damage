@@ -21,12 +21,11 @@ BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
 BLOODFLOW_DIR="$BASE_DIR/bloodflow/DataFiles/DefaultPatient"
 SCRIPT_DIR="$BASE_DIR/perfusion"    
-#PATIENT_DIR="patient_${SLURM_JOB_ID}"
-PATIENT_DIR="patient_19656819"
+PATIENT_DIR="patient_${SLURM_JOB_ID}"
 ZIP_NAME="${PATIENT_DIR}.zip"
 ZIP_PATH="${SCRATCHDIR}/${ZIP_NAME}"
 
-#echo "SLURM_JOB_ID=$SLURM_JOB_ID"
+echo "SLURM_JOB_ID=$SLURM_JOB_ID"
 echo "PATIENT_DIR=$PATIENT_DIR"
 echo "ZIP_NAME=$ZIP_NAME"
 echo "ZIP_PATH=$ZIP_PATH"
@@ -48,20 +47,20 @@ singularity exec \
 	python3 -m pip install --user --no-cache-dir numpy==1.24.4
         
         cd /mnt/project/
-		#cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
-		#cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
-		#cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
-		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
+		cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
+		cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
+		cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
+		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
 
-		#python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
-		cd perfusion
+		python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
+		#cd perfusion
 		#python3 convert_msh2hdf5.py "./$PATIENT_DIR/bf_sim/clustered_mesh.msh"  "./$PATIENT_DIR/bf_sim/clustered_mesh"
 		#rm -f "./$PATIENT_DIR/bf_sim/Coupled_resistance.csv"
 		#python3 coupled_flow_solver.py --res_fldr $PATIENT_DIR/perfusion/ --mesh_file $PATIENT_DIR/bf_sim/clustered_mesh.xdmf --inlet_boundary_file $PATIENT_DIR/bf_sim/boundary_condition_file.csv
 		#cp -TR  ./$PATIENT_DIR/perfusion "./$PATIENT_DIR/perfusion_healthy"
 		#python3 coupled_flow_solver.py --res_fldr $PATIENT_DIR/perfusion/ --mesh_file $PATIENT_DIR/bf_sim/clustered_mesh.xdmf --inlet_boundary_file $PATIENT_DIR/bf_sim/boundary_condition_file.csv
 		#cp -TR ./$PATIENT_DIR/perfusion "./$PATIENT_DIR/perfusion_stroke"
-		python3 infarct_calculation_thresholds.py --baseline "./$PATIENT_DIR/perfusion_healthy/perfusion.xdmf" --occluded "./$PATIENT_DIR/perfusion_stroke/perfusion.xdmf" --res_fldr ./$PATIENT_DIR/perfusion/ --mesh_file ./$PATIENT_DIR/bf_sim/clustered_mesh.xdmf --inlet_boundary_file ./$PATIENT_DIR/bf_sim/boundary_condition_file.csv
+		#python3 infarct_calculation_thresholds.py --baseline "./$PATIENT_DIR/perfusion_healthy/perfusion.xdmf" --occluded "./$PATIENT_DIR/perfusion_stroke/perfusion.xdmf" --res_fldr ./$PATIENT_DIR/perfusion/ --mesh_file ./$PATIENT_DIR/bf_sim/clustered_mesh.xdmf --inlet_boundary_file ./$PATIENT_DIR/bf_sim/boundary_condition_file.csv
 
     "
 
