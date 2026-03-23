@@ -46,8 +46,8 @@ singularity exec \
 	python3 -m pip install --user --no-cache-dir pandas
 	python3 -m pip install --user --no-cache-dir numpy==1.24.4
         
-        cd /mnt/project/
-		cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
+        #cd /mnt/project/
+		#cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
 		#cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
 		#cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
 		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
@@ -63,20 +63,25 @@ singularity exec \
 
 
 cd "$BASE_DIR/perfusion" || exit 1
-zip -r "$ZIP_PATH" "$PATIENT_DIR" || exit 1
+#zip -r "$ZIP_PATH" "$PATIENT_DIR" || exit 1
 
-if [ -f "$ZIP_PATH" ]; then
-    echo "Zip file created: $ZIP_PATH"
-else
-    echo "Zip file not created!"
-    exit 1
-fi
+echo "===== Model_parameters.txt ====="
+cat ./$PATIENT_DIR/bf_sim/Model_parameters.txt
+echo "================================"
 
-du -sh "$ZIP_PATH"
-ls -lh "$ZIP_PATH"
+#if [ -f "$ZIP_PATH" ]; then
+    #echo "Zip file created: $ZIP_PATH"
+#else
+    #echo "Zip file not created!"
+    #exit 1
+#fi
 
-cp "$ZIP_PATH" "$SCRATCHDIR/patient_output.zip" || exit 1
-ls -lh "$SCRATCHDIR/patient_output.zip"
+#du -sh "$ZIP_PATH"
+#ls -lh "$ZIP_PATH"
 
-cd "$SCRATCHDIR" || exit 1
-{% stage_out patient_output.zip %}
+
+#cp "$ZIP_PATH" "$SCRATCHDIR/patient_output.zip" || exit 1
+#ls -lh "$SCRATCHDIR/patient_output.zip"
+
+#cd "$SCRATCHDIR" || exit 1
+#{% stage_out patient_output.zip %}
