@@ -60,7 +60,7 @@ singularity exec \
 		cp -TR  ./$PATIENT_DIR/perfusion "./$PATIENT_DIR/perfusion_healthy"
 		python3 coupled_flow_solver.py --res_fldr $PATIENT_DIR/perfusion/ --mesh_file $PATIENT_DIR/bf_sim/clustered_mesh.xdmf --inlet_boundary_file $PATIENT_DIR/bf_sim/boundary_condition_file.csv
 		cp -TR ./$PATIENT_DIR/perfusion "./$PATIENT_DIR/perfusion_stroke"
-		python3 infarct_calculation_thresholds.py --baseline "./$PATIENT_DIR/perfusion_healthy/perfusion.xdmf" --occluded "./$PATIENT_DIR/perfusion_stroke/perfusion.xdmf"
+		python3 infarct_calculation_thresholds.py --baseline "./$PATIENT_DIR/perfusion_healthy/perfusion.xdmf" --occluded "./$PATIENT_DIR/perfusion_stroke/perfusion.xdmf" --res_fldr $PATIENT_DIR/perfusion/ --mesh_file $PATIENT_DIR/bf_sim/clustered_mesh.xdmf --inlet_boundary_file $PATIENT_DIR/bf_sim/boundary_condition_file.csv
 
     "
 
