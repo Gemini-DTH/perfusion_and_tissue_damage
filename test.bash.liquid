@@ -46,11 +46,11 @@ singularity exec \
 	python3 -m pip install --user --no-cache-dir pandas
 	python3 -m pip install --user --no-cache-dir numpy==1.24.4
         
-        #cd /mnt/project/
-		#cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
+        cd /mnt/project/
+		cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./perfusion/$PATIENT_DIR/"
 		#cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
 		#cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
-		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
+		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
 
 		#python3 ./bloodflow/Blood_Flow_1D/GenerateBloodflowFiles.py "./perfusion/$PATIENT_DIR/"
 		#cd perfusion
