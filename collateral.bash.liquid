@@ -50,7 +50,7 @@ singularity exec \
 		cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./bloodflow/Generated_Patients/$PATIENT_DIR/"
 		cp -f /mnt/scratch/config.xml ./perfusion/$PATIENT_DIR/config.xml
 		cp -f /mnt/scratch/Clots.txt ./perfusion/$PATIENT_DIR/Clots.txt
-		cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
+		#cp -f /mnt/scratch/Model_parameters.txt ./perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt
 		cd bloodflow
 		python3 generate_files.py "./Generated_Patients/$PATIENT_DIR/"
 		python3 ./Blood_Flow_1D/CollateralsSimulation.py "./Generated_Patients/$PATIENT_DIR/" 
