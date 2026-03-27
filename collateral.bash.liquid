@@ -52,19 +52,15 @@ singularity exec \
 		cp -f /mnt/scratch/Clots.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/Clots.txt
 		cp -f /mnt/scratch/Model_parameters.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/bf_sim/Model_parameters.txt
 		cd bloodflow
-		python3 generate_files.py "./Generated_Patients/$PATIENT_DIR/"
-		python3 ./Blood_Flow_1D/CollateralsSimulation.py "./Generated_Patients/$PATIENT_DIR/" 
-		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR/" True 50
+		#python3 generate_files.py "./Generated_Patients/$PATIENT_DIR/"
+		#python3 ./Blood_Flow_1D/CollateralsSimulation.py "./Generated_Patients/$PATIENT_DIR/" 
+		#python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR/" True 50
 
     "
 
 
-cd "$BASE_DIR/perfusion" || exit 1
+cd "$BASE_DIR/bloodflow/Generated_Patients" || exit 1
 zip -r "$ZIP_PATH" "$PATIENT_DIR" || exit 1
-
-echo "===== Model_parameters.txt ====="
-cat "$BASE_DIR/perfusion/$PATIENT_DIR/bf_sim/Model_parameters.txt"
-echo "================================"
 
 if [ -f "$ZIP_PATH" ]; then
     echo "Zip file created: $ZIP_PATH"
