@@ -51,10 +51,10 @@ singularity exec \
 		cp -f /mnt/scratch/config.xml ./bloodflow/Generated_Patients/$PATIENT_DIR/config.xml
 		cp -f /mnt/scratch/Clots.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/Clots.txt
 		cp -f /mnt/scratch/Model_parameters.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/bf_sim/Model_parameters.txt
-		cd bloodflow
-		python3 generate_files.py "./Generated_Patients/$PATIENT_DIR/"
-		python3 ./Blood_Flow_1D/CollateralsSimulation.py "./Generated_Patients/$PATIENT_DIR/" 
-		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR/" True 50
+		#cd bloodflow
+		#python3 generate_files.py "./Generated_Patients/$PATIENT_DIR/"
+		#python3 ./Blood_Flow_1D/CollateralsSimulation.py "./Generated_Patients/$PATIENT_DIR/" 
+		#python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR/" True 50
 
     "
 
