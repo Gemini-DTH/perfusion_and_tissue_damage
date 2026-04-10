@@ -40,6 +40,7 @@ singularity exec \
         export PYTHONPATH=\$HOME/.local/lib/python3.*/site-packages:\$PYTHONPATH
         export PYTHONPATH=/mnt/project/bloodflow/Blood_Flow_1D:$PYTHONPATH
         
+	python3 -m pip install --user --no-cache-dir Cython
 	python3 -m pip install --user --no-cache-dir scipy
 	python3 -m pip install --user --no-cache-dir networkx
 	python3 -m pip install --user --no-cache-dir PyQt5
