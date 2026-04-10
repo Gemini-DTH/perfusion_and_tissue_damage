@@ -41,20 +41,20 @@ singularity exec \
         export PYTHONPATH=/mnt/project/bloodflow/Blood_Flow_1D:$PYTHONPATH
         
 	python3 -m pip install --user --no-cache-dir scipy
-	python3 -m pip install --user --no-cache-dir networkx==2.6.3
-	python3 -m pip install --user --no-cache-dir PyQt5==5.15.6
-	python3 -m pip install --user --no-cache-dir PyYAML==6.0
-	python3 -m pip install --user --no-cache-dir lxml==4.6.4
-	python3 -m pip install --user --no-cache-dir h5py==3.5.0
-	python3 -m pip install --user --no-cache-dir matplotlib==3.4.3
-	python3 -m pip install --user --no-cache-dir pyacvd==0.2.7
-	python3 -m pip install --user --no-cache-dir pyvista==0.33.2
-	python3 -m pip install --user --no-cache-dir setuptools==58.5.2
-	python3 -m pip install --user --no-cache-dir tqdm==4.62.3
-	python3 -m pip install --user --no-cache-dir vtk==9.0.3
-	python3 -m pip install --user --no-cache-dir mgmetis==0.1.1
+	python3 -m pip install --user --no-cache-dir networkx
+	python3 -m pip install --user --no-cache-dir PyQt5
+	python3 -m pip install --user --no-cache-dir PyYAML
+	python3 -m pip install --user --no-cache-dir lxml
+	python3 -m pip install --user --no-cache-dir h5py
+	python3 -m pip install --user --no-cache-dir matplotlib
+	python3 -m pip install --user --no-cache-dir pyacvd
+	python3 -m pip install --user --no-cache-dir pyvista
+	python3 -m pip install --user --no-cache-dir setuptools
+	python3 -m pip install --user --no-cache-dir tqdm
+	python3 -m pip install --user --no-cache-dir vtk
+	python3 -m pip install --user --no-cache-dir mgmetis
 	#python3 -m pip install --user --no-cache-dir pandas
-	python3 -m pip install --user --no-cache-dir numpy==1.21.3
+	python3 -m pip install --user --no-cache-dir numpy
         
         cd /mnt/project/
 		cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./bloodflow/Generated_Patients/$PATIENT_DIR/"
