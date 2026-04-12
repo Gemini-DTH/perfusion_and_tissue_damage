@@ -46,7 +46,6 @@ singularity exec \
 		python3 -m pip install --user --no-cache-dir pandas
 		#python3 -m pip install --user --no-cache-dir numpy==1.24.4
 
-		echo "=== inside container ==="
         python3 --version 2>&1
         python3 -m pip --version 2>&1
         python3 -m pip freeze 2>&1 | head -n 50
