@@ -18,7 +18,7 @@ cd $SCRATCHDIR
 {% stage_in_by_filename Model_parameters.txt %}
 
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
-CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
+CONTAINER="$BASE_DIR/bloodflow/singularity_2.sif"
 BLOODFLOW_DIR="$BASE_DIR/bloodflow/DataFiles/DefaultPatient"
 SCRIPT_DIR="$BASE_DIR/bloodflow/Generated_Patients"    
 PATIENT_DIR="patient_${SLURM_JOB_ID}"
