@@ -13,8 +13,6 @@
 set -e
 cd $SCRATCHDIR
 
-{% stage_in_by_filename patient_collaterals_example_2.zip %}
-
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/bloodflow/singularity_2.sif"
 BLOODFLOW_DIR="$BASE_DIR/bloodflow/DataFiles/DefaultPatient"
@@ -51,31 +49,13 @@ singularity exec \
         
         cd /mnt/project/
 		rm -rf ./bloodflow/Generated_Patients/$PATIENT_DIR
-import zipfile
-import os
 
-zip_path = f"/mnt/scratch/{os.environ['"'"'PATIENT_DIR'"'"']}.zip"
-target_dir = "/mnt/project/bloodflow/Generated_Patients"
-
-with zipfile.ZipFile(zip_path, "r") as zf:
-    zf.extractall(target_dir)
-
-print("Unzipped:", zip_path)
-print("To:", target_dir)
-PY
 		#cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./bloodflow/Generated_Patients/$PATIENT_DIR/"
 		#sed -i '26 c CollateralPatientGen=True' './Generated_Patients/$PATIENT_DIR/bf_sim/Model_parameters.txt'
 		#cp -f /mnt/scratch/config.xml ./bloodflow/Generated_Patients/$PATIENT_DIR/config.xml
 		#cp -f /mnt/scratch/Clots.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/Clots.txt
 		#cp -f /mnt/scratch/Model_parameters.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/bf_sim/Model_parameters.txt
 		#dos2unix Model_parameters.txt
-
-		# 若 zip 內不是包一層資料夾，而是直接散檔，需要改這段
-        if [ ! -d ./bloodflow/Generated_Patients/$PATIENT_DIR ]; then
-            echo 'ERROR: Expected folder ./bloodflow/Generated_Patients/$PATIENT_DIR not found after unzip'
-            echo 'Please check the internal structure of patient_collaterals_example_2.zip'
-            exit 1
-        fi
 
 		cd bloodflow
 		#python3 generate_files.py "./Generated_Patients/$PATIENT_DIR/"
