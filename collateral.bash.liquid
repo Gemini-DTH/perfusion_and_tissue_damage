@@ -72,8 +72,10 @@ singularity exec \
 		cd bloodflow
 		#python3 generate_files.py "./Generated_Patients/$PATIENT_DIR/"
 		#python3 ./Blood_Flow_1D/CollateralsSimulation.py "./Generated_Patients/$PATIENT_DIR/" 
-		#python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR/" True 50
-		#python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR_1/" True 50
+		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR/" True 50
+		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR_1/" True 50
+		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR_2/" True 50
+		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR_3/" True 50
 
     "
 
