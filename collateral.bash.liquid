@@ -51,7 +51,18 @@ singularity exec \
         
         cd /mnt/project/
 		rm -rf ./bloodflow/Generated_Patients/$PATIENT_DIR
-		unzip -oq /mnt/scratch/${PATIENT_DIR}.zip -d ./bloodflow/Generated_Patients
+import zipfile
+import os
+
+zip_path = f"/mnt/scratch/{os.environ['"'"'PATIENT_DIR'"'"']}.zip"
+target_dir = "/mnt/project/bloodflow/Generated_Patients"
+
+with zipfile.ZipFile(zip_path, "r") as zf:
+    zf.extractall(target_dir)
+
+print("Unzipped:", zip_path)
+print("To:", target_dir)
+PY
 		#cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./bloodflow/Generated_Patients/$PATIENT_DIR/"
 		#sed -i '26 c CollateralPatientGen=True' './Generated_Patients/$PATIENT_DIR/bf_sim/Model_parameters.txt'
 		#cp -f /mnt/scratch/config.xml ./bloodflow/Generated_Patients/$PATIENT_DIR/config.xml
