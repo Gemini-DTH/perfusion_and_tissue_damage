@@ -13,27 +13,17 @@
 set -e
 cd $SCRATCHDIR
 
+{% stage_in_by_filename config.xml %}
+{% stage_in_by_filename Clots.txt %}
+{% stage_in_by_filename Model_parameters.txt %}
+
 BASE_DIR="/net/pr2/projects/plgrid/plgggemini/perfusion_and_tissue_damage"
 CONTAINER="$BASE_DIR/perfusion_and_tissue_damage.sif"
 BLOODFLOW_DIR="$BASE_DIR/bloodflow/DataFiles/DefaultPatient"
 SCRIPT_DIR="$BASE_DIR/bloodflow/Generated_Patients"    
-#PATIENT_DIR="patient_${SLURM_JOB_ID}"
-
-PATIENT_DIR="patient_collaterals_example_BH0030_CC10"
+PATIENT_DIR="patient_${SLURM_JOB_ID}"
 ZIP_NAME="${PATIENT_DIR}.zip"
 ZIP_PATH="${SCRATCHDIR}/${ZIP_NAME}"
-
-PATIENT_DIR_1="patient_collaterals_example_BH0025_CC1"
-ZIP_NAME_1="${PATIENT_DIR_1}.zip"
-ZIP_PATH_1="${SCRATCHDIR}/${ZIP_NAME_1}"
-
-PATIENT_DIR_2="patient_collaterals_example_BH0025_healthy"
-ZIP_NAME_2="${PATIENT_DIR_2}.zip"
-ZIP_PATH_2="${SCRATCHDIR}/${ZIP_NAME_2}"
-
-PATIENT_DIR_3="patient_collaterals_example_BH0025_CC2"
-ZIP_NAME_3="${PATIENT_DIR_3}.zip"
-ZIP_PATH_3="${SCRATCHDIR}/${ZIP_NAME_3}"
 
 echo "SLURM_JOB_ID=$SLURM_JOB_ID"
 echo "PATIENT_DIR=$PATIENT_DIR"
@@ -55,47 +45,34 @@ singularity exec \
 		python3 -m pip install --user --no-cache-dir mgmetis
 		python3 -m pip install --user --no-cache-dir pandas
 		python3 -m pip install --user --no-cache-dir numpy==1.24.4
-
-        #python3 --version 2>&1
-        #python3 -m pip --version 2>&1
-        #python3 -m pip freeze 2>&1 | head -n 50
         
         cd /mnt/project/
-
-		#cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./bloodflow/Generated_Patients/$PATIENT_DIR/"
+		cp -TR ./bloodflow/DataFiles/DefaultPatient_old "./bloodflow/Generated_Patients/$PATIENT_DIR/"
 		#sed -i '26 c CollateralPatientGen=True' './Generated_Patients/$PATIENT_DIR/bf_sim/Model_parameters.txt'
-		#cp -f /mnt/scratch/config.xml ./bloodflow/Generated_Patients/$PATIENT_DIR/config.xml
-		#cp -f /mnt/scratch/Clots.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/Clots.txt
-		#cp -f /mnt/scratch/Model_parameters.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/bf_sim/Model_parameters.txt
+		cp -f /mnt/scratch/config.xml ./bloodflow/Generated_Patients/$PATIENT_DIR/config.xml
+		cp -f /mnt/scratch/Clots.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/Clots.txt
+		cp -f /mnt/scratch/Model_parameters.txt ./bloodflow/Generated_Patients/$PATIENT_DIR/bf_sim/Model_parameters.txt
 		#dos2unix Model_parameters.txt
-
 		cd bloodflow
-		#python3 generate_files.py "./Generated_Patients/$PATIENT_DIR/"
+		python3 generate_files.py "./Generated_Patients/$PATIENT_DIR/"
 		#python3 ./Blood_Flow_1D/CollateralsSimulation.py "./Generated_Patients/$PATIENT_DIR/" 
-		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR/" True 50
-		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR_1/" True 50
-		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR_2/" True 50
-		python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR_3/" True 50
+		#python3 ./Blood_Flow_1D/ContrastModel.py "./Generated_Patients/$PATIENT_DIR/" True 50
 
     "
 
+cd "$BASE_DIR/bloodflow/Generated_Patients" || exit 1
+zip -r "$ZIP_PATH" "$PATIENT_DIR" || exit 1
 
-#cd "$BASE_DIR/bloodflow/Generated_Patients" || exit 1
-#zip -r "$ZIP_PATH" "$PATIENT_DIR" || exit 1
-#zip -r "$ZIP_PATH_1" "$PATIENT_DIR_1" || exit 1
+if [ -f "$ZIP_PATH" ]; then
+    echo "Zip file created: $ZIP_PATH"
+else
+    echo "Zip file not created!"
+    exit 1
+fi
 
-#if [ -f "$ZIP_PATH" ]; then
-    #echo "Zip file created: $ZIP_PATH"
-#else
-    #echo "Zip file not created!"
-    #exit 1
-#fi
+du -sh "$ZIP_PATH"
+ls -lh "$ZIP_PATH"
 
-#du -sh "$ZIP_PATH"
-#ls -lh "$ZIP_PATH"
-
-#cp "$ZIP_PATH" "$SCRATCHDIR/patient_output.zip" || exit 1
-#cp "$ZIP_PATH_1" "$SCRATCHDIR/patient_output_1.zip" || exit 1
-#cd "$SCRATCHDIR" || exit 1
-
-
+cp "$ZIP_PATH" "$SCRATCHDIR/patient_output.zip" || exit 1#ls -lh "$SCRATCHDIR/patient_output.zip"
+cd "$SCRATCHDIR" || exit 1
+{% stage_out patient_output.zip %}
