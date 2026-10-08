@@ -1,0 +1,47 @@
+# stroke case for stroke_study.py: Tree_3 split in 1-4, 4-5, 5-3 with the clot on 4-5, collateral 2-3 (length 75 mm)
+# (config_coupled_analyt.yaml is the healthy network); run: stroke_study.py --config_analyt_file <this file>
+network:
+  # dynamic viscosity of blood [Pa s]
+  mu: 20660.2
+  # velocity profile shape factor (2-> parabolic, higher flattened polynomial)
+  xi: 4
+  # list of nodal diameter values [m]
+  # D_data: [[0, 1, 0.002], [1, 2, 0.002], [1, 3, 0.002], [1, 4, 0.002], [4, 5, 0.002], [5, 3, 0.002], [2, 3, 0.002]]
+  D_data: [[0, 1, 0.002], [1, 2, 0.002], [1, 3, 0.002], [1, 4, 0.002], [4, 5, 0.002], [5, 3, 0.002]]
+  # defining nodal connectivity based on length matrix [m], first node ID 
+  # [start node ID, end node ID, length]
+  # L_data: [[0, 1, 0.005], [1, 2, 0.005], [1, 4, 0.0005], [4, 5, 0.001], [5, 3, 0.0035], [2, 3, 0.075]]
+  L_data: [[0, 1, 0.005], [1, 2, 0.005], [1, 4, 0.0005], [4, 5, 0.001], [5, 3, 0.0035]]
+  # list of boundary nodes
+  BC_ID_ntw: [0, 2, 3]
+  # define boundary type
+  # DBC-given pressure [Pa]; NBC-given volumetric flow rate [m^3/s]; CBC-coupled boundary condition )
+  BC_type_ntw: ['DBC', 'CBC', 'CBC']
+  # define bondary values, in the case of CBC: 0-beginning of domain, 1-end of domain
+  BC_val_ntw: [12500.0, 0, 1]
+  # blockage locations based on nodes, examples:
+  # []-no blockage; [[start1, end1],[start2, end2]] -  blocked segment list
+  # block_loc: [[1, 3]]
+  block_loc: [[4, 5]]
+continuum:
+  # venous pressure [Pa]
+  pv: 0
+  # permeability [m^3 kg s^-1]
+  K: 1.234e-12
+  # domain cross sectional area [m^2]
+  area: 0.00000025
+  # list of coupling coefficients for each subdomain
+  # beta: [0.000001, 0.0000004, 0.000001]
+  beta: [0.000001326, 0.000000522, 0.000001326]
+  l_subdom: [0.002, 0.004, 0.002]
+  # l_subdom: [0.008]
+  # DBC-given pressure [Pa]; NBC-given volumetric flow rate [m^3/s]; CBC-coupled boundary condition )
+  BC_type_con: ['CBC', 'CBC']
+  # efine bondary values, in the case of CBC the coupled node number
+  BC_val_con: [2, 3]
+numerical:
+  # number of nodes along the x direction
+  nx: 16
+  # tissue layers along the x direction (11-WM, 12-GM)
+  layers: [12, 11, 12]
+res_path: './results/'
